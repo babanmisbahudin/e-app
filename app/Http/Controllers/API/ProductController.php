@@ -38,5 +38,30 @@ class ProductController extends Controller
                 );
             }
         }
+
+        $product = Product::with(['category', 'galleries']);
+
+        if($name) {
+            $product->where('name', 'like', '%' .  $name . '%');
+        }
+        if($description) {
+            $product->where('description', 'like', '%' .  $description . '%');
+        }
+        if($tags) {
+            $product->where('tags', 'like', '%' .  $tags . '%');
+        }
+        if($price_from) {
+            $product->where('price', '>=',  $price_from);
+        }
+        if($price_to) {
+            $product->where('price', '<=',  $price_to);
+        }
+        if($catagories) {
+            $product->where('catagories',  $catagories);
+        }
+        return ResponseFormatter::success(
+                    $product->paginate($limit),
+                    'Data product berhasil diambil'
+        );
     } 
 }
